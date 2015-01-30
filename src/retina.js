@@ -10,7 +10,10 @@
 
         // Resize high-resolution images to original image's pixel dimensions
         // https://github.com/imulus/retinajs/issues/8
-        force_original_dimensions: true
+        force_original_dimensions: true,
+
+        // Allow regular expression for suffix matching to be configurable
+        regexMatch: /\.[\w\?=]+$/
     };
 
     function Retina() {}
@@ -62,7 +65,6 @@
     };
 
 
-    var regexMatch = /\.[\w\?=]+$/;
     function suffixReplace (match) {
         return config.retinaImageSuffix + match;
     }
@@ -76,11 +78,11 @@
             if (undefined !== document.createElement) {
                 var locationObject = document.createElement('a');
                 locationObject.href = this.path;
-                locationObject.pathname = locationObject.pathname.replace(regexMatch, suffixReplace);
+                locationObject.pathname = locationObject.pathname.replace(config.regexMatch, suffixReplace);
                 this.at_2x_path = locationObject.href;
             } else {
                 var parts = this.path.split('?');
-                parts[0] = parts[0].replace(regexMatch, suffixReplace);
+                parts[0] = parts[0].replace(config.regexMatch, suffixReplace);
                 this.at_2x_path = parts.join('?');
             }
             this.perform_check = true;
